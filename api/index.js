@@ -1,7 +1,27 @@
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
-app.listen(3000, () => {
-    console.log("server running on port 3000")
-})
+app.use(express.json());
+
+app.use(cookieParser());
+
+const PORT = process.env.PORT || 3000;
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+app.listen(PORT, () => {
+  console.log(`server running on port ${PORT}`);
+});
