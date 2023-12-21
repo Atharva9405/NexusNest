@@ -99,10 +99,24 @@ export default function Search() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams();
+    urlParams.set("searchTerm", sidebardata.searchTerm);
+    urlParams.set("type", sidebardata.type);
+    urlParams.set("parking", sidebardata.parking);
+    urlParams.set("furnished", sidebardata.furnished);
+    urlParams.set("offer", sidebardata.offer);
+    urlParams.set("sort", sidebardata.sort);
+    urlParams.set("order", sidebardata.order);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7  border-b-2 md:border-r-2 md:min-h-screen">
-        <form className="flex flex-col gap-8">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">
             <label className="whitespace-nowrap font-semibold">
               Search Term:
@@ -206,26 +220,21 @@ export default function Search() {
           Listing results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
-        {!loading && listings.length === 0 && (
-            <p className='text-xl text-slate-700'>No listing found!</p>
+          {!loading && listings.length === 0 && (
+            <p className="text-xl text-slate-700">No listing found!</p>
           )}
           {loading && (
-            <p className='text-xl text-slate-700 text-center w-full'>
+            <p className="text-xl text-slate-700 text-center w-full">
               Loading...
             </p>
           )}
 
-          {!loading &&
-            listings &&
-            listings.map((listing) => (
-              
-              listing.name
-            ))}
+          {!loading && listings && listings.map((listing) => listing.name)}
 
           {showMore && (
             <button
-            //   onClick={onShowMoreClick}
-              className='text-green-700 hover:underline p-7 text-center w-full'
+              //   onClick={onShowMoreClick}
+              className="text-green-700 hover:underline p-7 text-center w-full"
             >
               Show more
             </button>
